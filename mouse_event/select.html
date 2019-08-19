@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>drag</title>
+</head>
+<style>
+    .box {
+        border: 1px solid #333;
+        position: absolute;
+    }
+</style>
+
+<body>
+    <script>
+        console.log('run');
+
+
+
+        document.addEventListener('mousedown', function (e) {
+            let box = document.createElement('div');
+            let startPos = {
+                l: e.clientX,
+                t: e.clientY
+            }
+
+            document.body.appendChild(box);
+            box.classList.add('box');
+
+            
+
+            function move(e) {
+                let dis = {
+                    l: Math.abs(e.clientX - startPos.l),
+                    t: Math.abs(e.clientY - startPos.t)
+                }
+
+                box.style.left = Math.min(startPos.l, e.clientX) + 'px';
+                box.style.top = Math.min(startPos.t, e.clientY) + 'px';
+
+                box.style.width = dis.l + 'px';
+                box.style.height = dis.t + 'px';
+            }
+
+            document.addEventListener('mousemove', move);
+            document.addEventListener('mouseup', function () {
+                // box.remove();   
+                document.removeEventListener('mousemove', move);
+            }, {
+                    once: true
+                }
+            )
+        });
+
+    </script>
+</body>
+
+</html>

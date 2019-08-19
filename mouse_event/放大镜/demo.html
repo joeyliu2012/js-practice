@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div id="box">
+      <div id="left">
+        <img src="images/img.png" id="img1" />
+        <div id="mask"></div>
+      </div>
+      <div id="right">
+        <div id="border">
+          <img src="images/img.png" id="img2" />
+        </div>
+      </div>
+    </div>
+    <script>
+        {
+          let left = document.querySelector('#left');
+          let mask = document.querySelector('#mask');
+          let right = document.querySelector('#right');
+
+          let border = document.querySelector('#border');
+          let img1 = document.querySelector('#img1');
+          let img2 = document.querySelector('#img2');
+          
+          left.addEventListener('mousemove', function(e) {
+            mask.style.display = 'block';
+            right.style.display = 'block';
+
+            // mask/img1 = border/img2
+
+            let l = e.clientX - left.getBoundingClientRect().left - mask.offsetWidth/2;
+            let t = e.clientY - left.getBoundingClientRect().top - mask.offsetHeight/2;
+
+            let maskW = border.offsetWidth / img2.offsetWidth * img1.offsetWidth;
+            let maskH = border.offsetHeight/ img2.offsetHeight * img1.offsetHeight;
+
+
+            if(l > left.offsetWidth - mask.offsetWidth) {
+              l = left.offsetWidth - mask.offsetWidth;
+            }
+
+            if(t > left.offsetHeight - mask.offsetHeight) {
+              t = left.offsetHeight - mask.offsetHeight;
+            }
+
+            if(l<0){
+              l = 0;
+            }
+            if(t<0){
+              t = 0;
+            }
+
+            mask.style.left = l + 'px';
+            mask.style.top = t + 'px';
+
+            mask.style.width = maskW + 'px';
+            mask.style.height = maskH + 'px';
+
+            let ratio = img2.offsetWidth / img1.offsetWidth;
+
+            img2.style.left = -l * ratio + 'px';
+            img2.style.top = -t * ratio + 'px';
+
+          });
+
+          left.addEventListener('mouseleave', function() {
+            mask.style.display = 'none';
+            right.style.display = 'none';
+          });
+
+        }
+    </script>
+  </body>
+</html>

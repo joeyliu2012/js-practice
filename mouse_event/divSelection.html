@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>div selection</title>
+</head>
+<style>
+    #container {
+        border: 1px solid blue;
+        width: auto;
+        height: 300px;
+    }
+
+    #container li, .list li {
+        background: yellow;
+        float: left;
+        margin: 20px;
+        width: 100px;
+        height: 100px;
+        list-style: none;
+    }
+
+    .list .active {
+        background: green;
+    }
+
+    .box {
+        border: 1px solid blue;
+        background-color: rgba(0, 0, 255, .4);
+        position: absolute;
+    }
+</style>
+
+<body>
+    <ul id="container"></ul>
+    <ul class="list">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+        <li>6</li>
+        <li>7</li>
+        <li>8</li>
+        <li>9</li>
+    </ul>
+    <script>
+        let ul = document.querySelector('.list');
+        let container = document.querySelector('#container');
+        let li = document.querySelectorAll('.list li');
+
+        document.addEventListener('mousedown', function (e) {
+            let div = document.createElement('div');
+            ul.appendChild(div);
+            div.classList.add('box');
+
+            start = {
+                l: e.clientX,
+                t: e.clientY
+            }
+
+
+
+            function move(e) {
+
+                div.style.left = Math.min(e.clientX, start.l) + 'px';
+                div.style.top = Math.min(e.clientY, start.t) + 'px';
+
+                div.style.width = Math.abs(e.clientX - start.l) + 'px';
+                div.style.height = Math.abs(e.clientY - start.t) + 'px';
+
+                li.forEach(element => {
+                    if (isContact(element, div)) {
+                        element.classList.add('active');
+                    } else {
+                        console.log('remove')
+                        element.classList.remove('active');
+                    }
+                });
+
+                e.preventDefault();
+            }
+
+            document.addEventListener('mousemove', move);
+            document.addEventListener('mouseup', function () {
+
+                document.removeEventListener('mousemove', move);
+
+                div.remove();
+
+                lis = document.querySelectorAll('.active');
+                
+                lis.forEach(item =>{
+                    container.appendChild(item);
+                });
+
+            }, {
+                    once: true
+                });
+
+        });
+
+        function isContact(el1, el2) {
+
+            let e1 = el1.getBoundingClientRect();
+            let e2 = el2.getBoundingClientRect();
+            /*
+            *  el1.r < el2.l
+            *  el1.l > el2.r
+            *  el1.b > el2.t
+            *  el1.t < el2.b
+            */
+
+            if (
+                e1.right < e2.left ||
+                e1.left > e2.right ||
+                e1.bottom < e2.top ||
+                e1.top > e2.bottom
+            ) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+
+
+    </script>
+</body>
+
+</html>
