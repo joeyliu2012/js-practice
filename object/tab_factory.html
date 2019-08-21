@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tab</title>
+</head>
+<style>
+
+</style>
+
+<body>
+    <div class="myDiv1">
+        <button style="background: aqua">按钮1</button>
+        <button>按钮2</button>
+        <button>按钮3</button>
+        <p style="display: block">内容1</p>
+        <p style="display: none">内容2</p>
+        <p style="display: none">内容3</p>
+    </div>
+
+    <div class="myDiv2">
+        <button style="background: aqua">按钮1</button>
+        <button>按钮2</button>
+        <button>按钮3</button>
+        <button>按钮4</button>
+        <p style="display: block">内容1</p>
+        <p style="display: none">内容2</p>
+        <p style="display: none">内容3</p>
+        <p style="display: none">内容4</p>
+    </div>
+    <button class="nextPre">点击切换选tab1下一项</button>
+    <button class="autoPlay">点击自动切换tab2下一项</button>
+    <script>
+
+        function Tab(btns, ps) {
+            let obj = {};
+
+            btns.forEach((v, k) => {
+                v.onclick = function () {
+                    psFor(k);
+                }
+            });
+
+            function psFor(k) {
+                ps.forEach((value, key) => {
+                    if (k == key) {
+                        ps[key].style.display = 'block';
+                        btns[key].style.background = 'aqua';
+                        obj.key = key;
+                    } else {
+                        btns[key].style.background = '';
+                        ps[key].style.display = 'none';
+                    }
+                })
+            }
+
+            obj.psFor = psFor;
+            obj.tabNum = btns.length;
+
+            return obj;
+        }
+
+        let btns = document.querySelectorAll('.myDiv1 button');
+        let ps = document.querySelectorAll('.myDiv1 p');
+        let nextPre = document.querySelector('.nextPre');
+        let tab1 = Tab(btns, ps);
+        let num = 0;
+
+        nextPre.onclick = function() {
+            num = num > tab1.tabNum-1 ? 0 : num; 
+            tab1.psFor(num);
+            num++;
+        }
+
+        let btns2 = document.querySelectorAll('.myDiv2 button');
+        let ps2 = document.querySelectorAll('.myDiv2 p');
+        let autoPlay = document.querySelector('.autoPlay');
+        let tab2 = Tab(btns2, ps2);
+        
+
+        autoPlay.onclick = function() {
+            setInterval(()=>{
+                let num2 = tab2.key || 0; // 当前按钮索引 如没有从第一个开始
+                num2++;
+                num2 = num2 > tab2.tabNum-1 ? 0 : num2; 
+                tab2.psFor(num2);
+            },1000);
+        }
+        
+    </script>
+</body>
+
+</html>
