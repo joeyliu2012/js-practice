@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tab constructor mode</title>
+</head>
+
+<body>
+    <div class="mydiv">
+        <button style="background: aqua">按钮1</button>
+        <button>按钮2</button>
+        <p style="display: block">div1</p>
+        <p style="display: none">div2</p>
+    </div>
+
+    <div class="mydiv2">
+        <button style="background: aqua">按钮1</button>
+        <button>按钮2</button>
+        <button>按钮3</button>
+        <button>按钮4</button>
+        <p style="display: block">div1</p>
+        <p style="display: none">div2</p>
+        <p style="display: none">div3</p>
+        <p style="display: none">div4</p>
+    </div>
+
+    <button class="nextPrev">点击切换第一组下一个tab</button>
+    <button class="autoPlay">点击自动切换第二组tab</button>
+
+    <script>
+
+        function Tab(btns, ps) {
+            this.btns = btns;
+            this.ps = ps;
+            this.tabNum = btns.length;
+            this.btnsFor();
+        }
+
+        Tab.prototype.btnsFor = function () {
+            this.btns.forEach((v, k) => {
+                v.onclick = () => {
+                    this.psFor(k);
+                }
+            });
+        }
+
+        Tab.prototype.index = function() {
+            for(let i=0; i< this.btns.length;i++) {
+                if(this.btns[i].style.background == 'aqua') {
+                    return i;
+                }
+            }
+        }
+
+        Tab.prototype.psFor = function (k) {
+            this.ps.forEach((value, key) => {
+                if (k == key) {
+                    this.btns[key].style.background = 'aqua';
+                    this.ps[key].style.display = 'block';
+                } else {
+                    this.btns[key].style.background = '';
+                    this.ps[key].style.display = 'none';
+                }
+            })
+        };
+
+        let btns = document.querySelectorAll('.mydiv button');
+        let ps = document.querySelectorAll('.mydiv p');
+        let nextPrev = document.querySelector('.nextPrev');
+        let tab1 = new Tab(btns, ps);
+        let num = tab1.index();
+        
+        nextPrev.onclick = function () {
+            num = num > tab1.tabNum - 1 ? 0 : num;
+            tab1.psFor(num);
+            num++;
+        }
+
+        let btns2 = document.querySelectorAll('.mydiv2 button');
+        let ps2 = document.querySelectorAll('.mydiv2 p');
+        let autoPlay = document.querySelector('.autoPlay');
+        let tab2 = new Tab(btns2, ps2);
+
+        autoPlay.onclick = function () {
+            let num2 = tab2.index();
+            setInterval(() => {
+                num2 = num2 > tab2.tabNum - 1 ? 0 : num2;
+                tab2.psFor(num2);
+                num2++;
+            }, 1000)
+        }
+
+    </script>
+</body>
+
+</html>
