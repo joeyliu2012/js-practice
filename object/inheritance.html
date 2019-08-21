@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>inheritance</title>
+</head>
+
+<body>
+</body>
+<script>
+    function Dad() {
+        this.name = 'John';
+        this.age = 50;
+        this.money = '$100000';
+    }
+
+    Dad.prototype.hobby = function () {
+        console.log('like basketball');
+    }
+
+    let dad = new Dad();
+    console.log(dad);
+
+    function Son() {
+        Dad.call(this);
+    }
+
+    Son.prototype = deepCopy(Dad.prototype);
+    Son.prototype.constructor = Son;
+    
+    let tom = new Son();
+    console.log(tom); 
+
+
+
+    tom.hobby();
+
+    function deepCopy(obj) {
+        let newobj = Array.isArray(obj) ? [] : {};
+
+        for (let i in obj) {
+            if (obj.hasOwnProperty(i)) {
+                if (typeof obj[i] == 'object') {
+                    newobj[i] = deepCopy(obj[i]);
+                } else {
+                    newobj[i] = obj[i];
+                }
+            }
+        }
+        return newobj;
+    }
+</script>
+
+</html>

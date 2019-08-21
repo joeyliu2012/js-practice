@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>drag</title>
+    <style>
+        div {
+            width: 150px;
+            height: 150px;
+            position: absolute;
+        }
+
+        .mydiv1 {
+            background: blue;
+        }
+
+        .mydiv2 {
+            background: green;
+            left: 300px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mydiv1"></div>
+    <div class="mydiv2"></div>
+</body>
+<script>
+    // mydiv1.onmousedown = function (e) {
+    //     let posX = e.clientX - mydiv1.offsetLeft;
+    //     let posY = e.clientY - mydiv1.offsetTop;
+
+    //     document.onmousemove = function (e) {
+    //         mydiv1.style.left = e.clientX - posX + 'px';
+    //         mydiv1.style.top = e.clientY - posY + 'px';
+    //     }
+
+    //     document.onmouseup = function () {
+    //         document.onmousemove = "";
+    //     }
+    // }
+
+    function Drag(el) {
+        this.el = el;
+        this.downFn();
+    }
+
+    Drag.prototype.downFn = function () {
+        this.el.onmousedown = e => {
+            let x = e.clientX - this.el.offsetLeft;
+            let y = e.clientY - this.el.offsetTop;
+            this.moveFn(x, y);
+            this.upFn();
+        }
+    }
+
+    Drag.prototype.moveFn = function (x, y) {
+        document.onmousemove = e => {
+            this.setStyle(e.clientX - x, e.clientY - y);
+        }
+    }
+
+    Drag.prototype.upFn = function () {
+        document.onmouseup = () => {
+            document.onmousemove = "";
+        }
+    }
+
+    Drag.prototype.setStyle = function (leftPos, topPos) {
+        this.el.style.left = leftPos + 'px';
+        this.el.style.top = topPos + 'px';
+    }
+
+    let mydiv2 = document.querySelector('.mydiv2');
+
+
+    let drag2 = new Drag(mydiv2);
+
+    function LimitDrag(el) {
+        Drag.call(this, el);
+    }
+
+    LimitDrag.prototype = deepCopy(Drag.prototype);
+    LimitDrag.prototype.constructor = LimitDrag;
+
+    LimitDrag.prototype.setStyle = function (leftPos, topPos) {
+        if (leftPos < 0) {
+            leftPos = 0;
+        }
+        if (topPos < 0) {
+            topPos = 0;
+        }
+
+        this.el.style.left = leftPos + 'px';
+        this.el.style.top = topPos + 'px';
+    }
+
+    let mydiv1 = document.querySelector('.mydiv1');
+    let drag1 = new LimitDrag(mydiv1);
+
+    function deepCopy(obj) {
+        let newobj = Array.isArray(obj) ? [] : {};
+
+        for (let i in obj) {
+            if (obj.hasOwnProperty(i)) {
+                if (typeof obj[i] == 'object') {
+                    newobj[i] = deepCopy(obj[i]);
+                } else {
+                    newobj[i] = obj[i];
+                }
+            }
+        }
+        return newobj;
+    }
+
+
+
+</script>
+
+</html>

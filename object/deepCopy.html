@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>deep copy</title>
+</head>
+<body>
+    <script>
+        let myProto = {
+            name: 'tom',
+            age: 20,
+            arr:[1,2,3],
+            test: undefined,
+            fn: function(){
+                console.log('fn...');
+            },
+            obj: {
+                a:5
+            },
+            weight: null
+        }
+
+        // deep copy
+        // let sonProto = JSON.parse(JSON.stringify(myProto));
+        let sonProto = deepCopy(myProto);
+        sonProto.name = 'jerry';
+
+        console.log(myProto,sonProto);
+
+        // deep copy function
+
+        function deepCopy(obj) {
+            let newobj = Array.isArray(obj)?[]:{};
+
+            for(let i in obj) {
+                if(obj.hasOwnProperty(i)) {
+                    if(typeof obj[i] == 'object') {
+                        newobj[i] = deepCopy(obj[i]);
+                    } else {
+                        newobj[i] = obj[i];
+                    }
+                }
+            }
+            return newobj;
+        }
+    </script>
+</body>
+</html>
