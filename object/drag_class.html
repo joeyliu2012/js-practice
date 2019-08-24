@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>drag class</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        div {
+            width: 150px;
+            height: 150px;
+            position: absolute;
+        }
+
+        .myDiv1 {
+            background: blue;
+        }
+
+        .myDiv2 {
+            background: green;
+            left: 300px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="myDiv1"></div>
+    <div class="myDiv2"></div>
+
+    <script>
+        class Drag {
+            constructor(el) {
+                this.el = el;
+                this.downFn();
+            }
+
+            downFn() {
+                this.el.onmousedown = e => {
+                    let x = e.clientX - this.el.offsetLeft;
+                    let y = e.clientY - this.el.offsetTop;
+
+                    this.moveFn(x, y);
+                    this.upFn();
+                }
+            }
+
+            moveFn(x, y) {
+                document.onmousemove = e => {
+                    this.setStyle(e.clientX - x, e.clientY - y);
+                }
+            }
+
+            upFn() {
+                document.onmouseup = () => {
+                    document.onmousemove = null;
+                }
+            }
+
+            setStyle(leftPos, topPos) {
+                this.el.style.left = leftPos + 'px';
+                this.el.style.top = topPos + 'px';
+            }
+        }
+
+        class LimitDrag extends Drag {
+            constructor(el) {
+                super(el);
+            }
+
+            setStyle(leftPos, topPos) {
+                let leftBound = document.documentElement.clientWidth - this.el.offsetWidth;
+                let topBound = document.documentElement.clientHeight - this.el.offsetHeight;
+
+                if (leftPos < 0) {
+                    this.el.style.left = 0 + 'px';
+                } else if (leftPos > leftBound) {
+                    this.el.style.left = leftBound + 'px';
+                } else {
+                    this.el.style.left = leftPos + 'px';
+                }
+
+                if (topPos < 0) {
+                    this.el.style.top = 0 + 'px';
+                } else if (topPos > topBound) {
+                    this.el.style.top = topBound + 'px'
+                } else {
+                    this.el.style.top = topPos + 'px';
+                }
+            }
+        }
+
+        let myDiv2 = document.querySelector('.myDiv2');
+        let drag2 = new Drag(myDiv2);
+
+        let myDiv1 = document.querySelector('.myDiv1');
+        let drag1 = new LimitDrag(myDiv1);
+
+    </script>
+</body>
+
+</html>
