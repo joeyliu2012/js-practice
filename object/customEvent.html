@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Custom Event</title>
+</head>
+
+<body>
+    <script>
+        function event1() {
+            console.log('event 1...');
+        }
+
+        function event2() {
+            console.log('event 2...');
+        }
+
+        // let handle = {};
+
+        // addEvent('myfn', event1);
+        // addEvent('myfn', event2);
+
+        // removeEvent('myfn', event2);
+
+        // trigger('myfn');
+
+        // function addEvent(eventName, fn) {
+        //     if (typeof handle[eventName] == 'undefined') {
+        //         handle[eventName] = [];
+        //     }
+        //     handle[eventName].push(fn);
+        // }
+
+        // function trigger(eventName) {
+        //     handle[eventName].forEach(v => {
+        //         v();
+        //     })
+        // }
+
+        // function removeEvent(eventName, fn) {
+        //     if (!fn in handle[eventName]) {
+        //         return;
+        //     }
+        //     for (let i = 0; i < handle[eventName].length; i++) {
+        //         if (handle[eventName][i] === fn) {
+        //             handle[eventName].splice(i, 1);
+        //             break;
+        //         }
+        //     }
+        // }
+
+        class CustomEvent {
+            constructor() {
+                this.handle = {};
+            }
+
+            addEvent(eventName, fn) {
+                if (typeof this.handle[eventName] == 'undefined') {
+                    this.handle[eventName] = [];
+                }
+                this.handle[eventName].push(fn);
+            }
+
+            trigger(eventName) {
+                this.handle[eventName].forEach(v => {
+                    v();
+                })
+            }
+
+            removeEvent(eventName, fn) {
+                if (!fn in this.handle[eventName]) {
+                    return;
+                }
+                for (let i = 0; i < this.handle[eventName].length; i++) {
+                    if (this.handle[eventName][i] === fn) {
+                        this.handle[eventName].splice(i, 1);
+                        break;
+                    }
+                }
+            }
+        }
+
+        let myEvent = new CustomEvent();
+        myEvent.addEvent('myfn',event1);
+        myEvent.addEvent('myfn',event2);
+
+        // myEvent.removeEvent('myfn',event1);
+
+        myEvent.trigger("myfn");
+
+    </script>
+</body>
+
+</html>
