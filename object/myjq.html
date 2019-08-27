@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./myjq.js"></script>
+    <title>My Jquery</title>
+    <style>
+        .mydiv1 {
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+
+        .mydiv2 {
+            width: 100px;
+            height: 100px;
+            background: blue;
+        }
+    </style>
+</head>
+<body>
+    <div class="mydiv1"></div>
+    <div class="mydiv2"></div>
+    <script>
+        // $('div').click(function(){
+        //     console.log(1);
+        // });
+        // let res = $('div').eq(0).end();
+        // console.log(res);
+        // console.log($('.mydiv1').css('background'));
+        // $('.mydiv1').css('background','yellow');
+        // $('.mydiv1').css({background:'black',height:'200px'});
+        $.cssNumber.pm = true;
+        console.log($.cssNumber);
+    </script>
+</body>
+</html>
