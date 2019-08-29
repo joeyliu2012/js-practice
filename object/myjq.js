@@ -1,37 +1,35 @@
 class Jq {
-    constructor(arg,root) {
-        if(typeof root == 'undefined') {
+    constructor(arg, root) {
+        if (typeof root == 'undefined') {
             this.prevObject = new Jq(document, null);
         }
-        if(root) {
+        if (root) {
             this.prevObject = root;
         }
-        
 
-        if(typeof arg == "string") {
+        if (typeof arg == "string") {
             let el = document.querySelectorAll(arg);
             this.addEvent(el);
-        } else if(typeof arg == "function") {
+        } else if (typeof arg == "function") {
             window.addEventListener("DOMContentLoaded", arg);
         } else {
             // native node 
-            if(typeof arg.length == "undefined") {
+            if (typeof arg.length == "undefined") {
                 this[0] = arg;
                 this.length = 1;
             } else {
                 this.addEvent(arg);
             }
-
         }
     }
 
     addEvent(el) {
-        el.forEach((v,k) =>{
+        el.forEach((v, k) => {
             this[k] = v;
         })
         this.length = el.length;
     }
-    
+
     eq(index) {
         return new Jq(this[index], this);
     }
@@ -41,21 +39,33 @@ class Jq {
     }
 
     css(...arg) {
-        if(arg.length >1) {
+        if (arg.length > 1) {
             // array
-            for(let i=0; i< this.length;i++) {
-                this.setStyle(this[i], arg[0], arg[1]);
+            for (let i = 0; i < this.length; i++) {
+                if (arg[0] in $.cssHooks) {
+                    $.cssHooks[arg[0]].set(this[i], arg[1]);
+                } else {
+                    this.setStyle(this[i], arg[0], arg[1]);
+                }
             }
         } else {
-            if(typeof arg[0] == "string") {
+            if (typeof arg[0] == "string") {
                 // string
-                return this.getStyle(this[0], arg[0]);
+                if (arg[0] in $.cssHooks) {
+                    return $.cssHooks[arg[0]].get(this[0]);
+                } else {
+                    return this.getStyle(this[0], arg[0]);
+                }
             } else {
                 // obj
-                for(let i=0; i< this.length;i++) {
-                    for(let j in arg[0]) {
-                        this.setStyle(this[i], j, arg[0][j]);
-                    }   
+                for (let i = 0; i < this.length; i++) {
+                    for (let j in arg[0]) {
+                        if (j in $.cssHooks) {
+                            $.cssHooks[j].set(this[i], arg[0][j]);
+                        } else {
+                            this.setStyle(this[i], j, arg[0][j]);
+                        }
+                    }
                 }
             }
         }
@@ -66,7 +76,7 @@ class Jq {
     }
 
     setStyle(el, styleName, styleValue) {
-        if(typeof styleValue == 'number' && !(styleName in $.cssNumber)) {
+        if (typeof styleValue == 'number' && !(styleName in $.cssNumber)) {
             styleValue += 'px';
         }
 
@@ -74,24 +84,24 @@ class Jq {
     }
 
     click(fn) {
-        for(let i=0;i<this.length;i++) {
-            this[i].addEventListener('click',fn);
+        for (let i = 0; i < this.length; i++) {
+            this[i].addEventListener('click', fn);
         }
     }
-    
-    on(eventName,fn) {
+
+    on(eventName, fn) {
         let reg = /\s+/g
         eventName = eventName.replace(reg, ' ');
         let evertArr = eventName.split(' ');
-        for(let i=0; i< eventName.length;i++) {
-            for(let j=0;j<this.length;j++) {
+        for (let i = 0; i < eventName.length; i++) {
+            for (let j = 0; j < this.length; j++) {
                 this[j].addEventListener(evertArr[i], fn);
             }
         }
     }
 }
 
-function $ (arg) {
+function $(arg) {
     return new Jq(arg);
 }
 
@@ -117,4 +127,8 @@ $.cssNumber = {
     widows: true,
     zIndex: true,
     zoom: true
+}
+
+$.cssHooks = {
+
 }

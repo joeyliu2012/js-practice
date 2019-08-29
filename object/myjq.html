@@ -34,6 +34,18 @@
         // $('.mydiv1').css({background:'black',height:'200px'});
         $.cssNumber.pm = true;
         console.log($.cssNumber);
+        $.cssHooks['wh'] = {
+            get(el) {
+                console.log(el);
+                return 'some value...';
+            },
+            set(el, value) {
+                el.style['width'] = value;
+                el.style['height'] = value;
+            }
+        }
+
+        $(".mydiv1").css("wh", "300px");
     </script>
 </body>
 </html>
