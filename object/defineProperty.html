@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>define property</title>
+</head>
+<body>
+    
+</body>
+<script>
+    let myobj = {};
+    Object.defineProperty(myobj,'name', {
+        configurable:true,
+        enumerable:true,
+        get() {
+            console.log('get name');
+            return 'tom';
+        },
+        set(newValue) {
+            console.log(newValue);
+        }
+    })
+
+    Object.defineProperty(myobj,'age', {
+        get() {
+            console.log('get age');
+            return 20;
+        },
+        set(newValue) {
+            console.log(newValue);
+        }
+    })
+
+    console.log(myobj);
+
+    // configurable
+    // delete myobj.name
+
+    // enumerable
+    // 1. for(let i in myobj) {
+    //     console.log(i);
+    // }
+    // 2. Object.keys();
+    // 3. JSON.stringify();
+    // 4. Object.assign();
+
+
+    // proxy
+    let myobj = {
+        nane: 'tom',
+        age: 20
+    }
+    let obj = new Proxy(myobj,{
+        get(target, key) {
+            return target[key];
+        },
+        set(target,key,value) {
+            target[key] = value; 
+        }
+    })
+
+</script>
+</html>
