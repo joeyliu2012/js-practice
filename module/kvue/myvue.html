@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>my vue</title>
+    <!-- <script src="./Kvue.js" type="module"></script> -->
+</head>
+
+<body>
+    <div id="app">
+        {{ message }} daf {{ message }}
+        <div>
+            <span>
+
+            </span>
+        </div>
+        <div v-html ='htmldata'></div>
+        <input type="text" v-model='modelData' /> {{modelData}}
+    </div>
+   
+    <script type="module">
+        import Kvue from './Kvue.js'
+        let vm = new Kvue({
+            el: "#app",
+            data: {
+                message: 'test data1',
+                htmldata: 'html data',
+                modelData: 'model data'
+            }
+        })
+    </script>
+</body>
+
+</html>
