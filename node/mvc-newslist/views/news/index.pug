@@ -5,14 +5,14 @@ html(lang="en")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         meta(http-equiv="X-UA-Compatible", content="ie=edge")
         title news list
-        link(rel='stylesheet', href='../style.css')
+        link(rel='stylesheet', href='../css/style.css')
     body
         .wrap
             for item in newsData
                 ul.news-list
                     li.news
                         a(href="javascript:;")
-                            img(src="../img/img.png" alt="")
+                            img(src='../'+item.img alt="")
                         div
                             h3
                                 a(href="/news/detail?id="+item.id) #{item.title}

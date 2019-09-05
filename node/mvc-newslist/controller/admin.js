@@ -1,8 +1,24 @@
+const adminService = require('../service/admin');
 module.exports = {
-    showIndex(ctx) {
-        ctx.body = "admin homepage";
+    async showIndex(ctx) {
+        // ctx.body = "admin homepage";
+        await ctx.render('admin/admin.pug')
     },
-    addNews(ctx) {
-        ctx.body = "addNews page";
+    async addNews(ctx) {
+        // ctx.body = "addNews page";
+        await ctx.render('admin/addNews.pug')
+    },
+    async newsList(ctx) {
+        // ctx.body = "addNews page";
+        await ctx.render('admin/newsList.pug')
+    },
+    async addNewsData(ctx) {
+        // console.log(ctx.request.body);
+        // console.log(ctx.request.files);
+        let res = await adminService.addNewsData(ctx.request);
+        console.log(res);
+        await ctx.render('admin/message.pug', {
+            res
+        });
     }
 }
