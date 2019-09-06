@@ -3,7 +3,6 @@ let newsData = require('../data/data.json');
 module.exports = {
     getData (size,p) {
         let formatData = newsData.slice(size*(p-1), p*size);
-
         return formatData;
     },
     getPages(p,size) {

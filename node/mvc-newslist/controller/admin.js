@@ -16,7 +16,6 @@ module.exports = {
         // console.log(ctx.request.body);
         // console.log(ctx.request.files);
         let res = await adminService.addNewsData(ctx.request);
-        console.log(res);
         await ctx.render('admin/message.pug', {
             res
         });

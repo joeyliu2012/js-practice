@@ -9,7 +9,7 @@ module.exports = {
             content,
             type,
             country,
-            addTime: dataObj.getFullYear(),
+            addtime: dataObj.getFullYear()+ '-' +(dataObj.getMonth() + 1) + '-' + dataObj.getDate(),
             id: newsData[newsData.length - 1].id + 1
         }
         if (typeof request.files.img !== 'undefined') {
