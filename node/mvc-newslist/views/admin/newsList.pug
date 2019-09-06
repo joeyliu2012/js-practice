@@ -21,6 +21,30 @@ style.
         a{
           text-decoration:none;
         }
+        .pagination{
+            display: flex;
+            width: 210px;
+            text-align: center;
+            background-color: rgb(252, 238, 238);
+            border-radius: 25px;
+            overflow: hidden;
+            margin: 30px auto;
+            justify-content: center;
+        }
+        .pagination a{
+            width: 30px;
+            line-height: 30px;
+            color: #404040;
+        }
+        .pagination a:nth-child(1) {
+            transform: rotate(-45deg) ;
+        }
+        .next {
+            transform: rotate(45deg) ;
+        }
+        .pagination a:hover{
+            color: rgb(247, 73, 73);
+        }
   
 div
   table(border='0')
@@ -31,29 +55,18 @@ div
         th 国家
         th 缩略图
         th 操作
-      tr
-        td 18人死伤！韩国一男子纵火后持凶器伤害避险邻居
-        td 纵火
-        td 韩国
-        td
-          img(width='140px', src='../img/img.png')
-        td
-          span.delBtn 删除
-      tr
-        td 18人死伤！韩国一男子纵火后持凶器伤害避险邻居
-        td 纵火
-        td 韩国
-        td
-          img(width='140px', src='../img/img.png')
-        td
-          span.delBtn 删除
-      tr
-        td 18人死伤！韩国一男子纵火后持凶器伤害避险邻居
-        td 纵火
-        td 韩国
-        td
-          img(width='140px', src='../img/img.png')
-        td
-          span.delBtn 删除
-  | 
-1 2 3
+      for v in formatData
+        tr
+          td #{v.title}
+          td #{v.type}
+          td #{v.country}
+          td
+            img(width='140px',height='88px', src='../'+ v.img)
+          td
+            span.delBtn 删除
+      
+div.pagination
+  a.prev(href="/admin/newslist?p="+prev) ⌜
+  - for(let i=1; i<=pages;i++)
+      a(href="/admin/newslist?p=" + i) #{i}
+  a.next(href="/admin/newslist?p="+next) ⌝

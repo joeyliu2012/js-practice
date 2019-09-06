@@ -10,7 +10,18 @@ module.exports = {
     },
     async newsList(ctx) {
         // ctx.body = "addNews page";
-        await ctx.render('admin/newsList.pug')
+        let size = 5;
+        let p = ctx.query.p || 1;
+        let formatData = adminService.newsList(p,size);
+        let prev = adminService.getPages(p,size).prev;
+        let next = adminService.getPages(p,size).next;
+        let pages = adminService.getPages(p,size).pages;
+        await ctx.render('admin/newsList.pug',{
+            formatData,
+            prev,
+            next,
+            pages
+        })
     },
     async addNewsData(ctx) {
         // console.log(ctx.request.body);

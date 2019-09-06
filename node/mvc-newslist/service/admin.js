@@ -33,5 +33,17 @@ module.exports = {
                 }
             })
         })
+    },
+    newsList(p,size) {
+        return newsData.slice((p-1)*size,p*size);
+    },
+    getPages(p,size) {
+        p = parseInt(p);
+        let prev = p<=1?1:p-1;
+        let next = p>=size?p:p+1;
+        let pages = Math.ceil(newsData.length/size);
+        return {
+            prev,next,pages
+        }
     }
 }
