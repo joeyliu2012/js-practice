@@ -63,7 +63,7 @@ div
           td
             img(width='140px',height='88px', src='../'+ v.img)
           td
-            span.delBtn 删除
+            a.delBtn(href='/admin/delete?id='+v.id) 删除
       
 div.pagination
   a.prev(href="/admin/newslist?p="+prev) ⌜

@@ -45,5 +45,28 @@ module.exports = {
         return {
             prev,next,pages
         }
+    },
+    deleteList(id) {
+        newsData.forEach((v,k) =>{
+            if(v.id == id) {
+                newsData.splice(k,1);
+            }
+        })
+        // console.log(newsData);
+        return new Promise(resolve =>{
+            fs.writeFile('data/data.json', JSON.stringify(newsData),err =>{
+                if(!err) {
+                    resolve({
+                        info: 'delete successfully',
+                        code: 0
+                    })
+                } else {
+                    resolve({
+                        info: 'delete failed',
+                        code: 1
+                    })
+                }
+            })
+        })
     }
 }

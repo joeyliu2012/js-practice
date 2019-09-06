@@ -7,7 +7,8 @@ let routerAdmin = new Router({
 
 routerAdmin.get('/index', adminController.showIndex);
 routerAdmin.get('/addNews', adminController.addNews);
-routerAdmin.get('/newslist', adminController.newsList);
+routerAdmin.get('/newsList', adminController.newsList);
+routerAdmin.get('/delete', adminController.deleteList);
 routerAdmin.all('/addNewsData', adminController.addNewsData);
 
 module.exports = routerAdmin;

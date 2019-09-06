@@ -30,5 +30,14 @@ module.exports = {
         await ctx.render('admin/message.pug', {
             res
         });
+    },
+    async deleteList(ctx) {
+        // console.log(ctx.query.id);
+        let id = ctx.query.id;
+        let res = await adminService.deleteList(id);
+        console.log(res);
+        // if(res.code == 0) {
+            ctx.redirect('/admin/newsList');
+        // }
     }
 }
