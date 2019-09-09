@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <link rel="stylesheet" href="../static/css/login.css" />
+  <link rel="stylesheet" href="css/login.css" />
   <title>Document</title>
 </head>
 
@@ -13,11 +13,60 @@
   <div class="loginContainer">
     <h1>登录</h1>
     <form action="/checkUser" method="post">姓名：
-      <input class="inputStyle" type="text" name="username" /><br />密码：
+      <input class="inputStyle" type="text" name="username" />
+      <div class="exchange hint"></div>
+      <br />密码：
       <input class="inputStyle" type="password" name="pwd" /><br />
-      <input class="loginStyle" type="submit" value="登录" />
+      <div class="reason"></div>
+      <input class="loginStyle submit" type="submit" value="登录" />
     </form>
   </div>
 </body>
+<script>
+  let code;
+  let inputs = document.querySelectorAll('.inputStyle');
+  document.querySelector('.hint').style.display = 'none';
+  inputs[0].onblur = function () {
+    let username = inputs[0].value;
+    let xhr = new XMLHttpRequest();
+    xhr.open('get', `/checkUser?username=${username}`, true);
+    xhr.onload = function () {
+      let obj = JSON.parse(xhr.responseText);
+      code = obj.code;
+      document.querySelector('.hint').innerHTML = obj.info;
+      document.querySelector('.hint').style.display = 'block';
+      if (obj.code == 0) {
+        document.querySelector('.hint').style.color = 'green';
+      } else {
+        document.querySelector('.hint').style.color = 'red';
+      }
+    }
+    xhr.send();
+    // document.querySelector('.hint').style.display = 'block';
+  }
+
+  document.querySelector('.submit').onclick = function (e) {
+    e.preventDefault();
+    if (code == 0) {
+      let xhr = new XMLHttpRequest();
+      xhr.open('post', '/login', true);
+      xhr.onload = function () {
+        console.log(xhr.responseText);
+        let obj = JSON.parse(xhr.responseText);
+        if(obj.code == 0) {
+          window.location.href="/photo"
+        } else {
+          document.querySelector('.reason').innerHTML = obj.info;
+        }
+      }
+      xhr.send(JSON.stringify({
+        username: inputs[0].value,
+        password: inputs[1].value
+      }))
+
+    }
+
+  } 
+</script>
 
 </html>
