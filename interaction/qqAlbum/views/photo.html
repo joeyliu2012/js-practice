@@ -95,7 +95,7 @@
         document.querySelector(".masking").style.display = "block";
     }
     document.querySelector('.imgFile').onchange = function() {
-        console.log(this.files);
+        // console.log(this.files);
         document.querySelector('.showContainer').style.display = 'none';
         document.querySelector('.loadContainer').style.display = 'block';
         [...this.files].forEach(file=>{
@@ -108,12 +108,13 @@
     document.querySelector('.imgFile-add').onchange = function() {
         [...this.files].forEach(file=>{
             let uploadWantItem = new UploadItem(file);
-            uploadArr.push(file);
+            uploadArr.push(uploadWantItem);
             uploadWantItem.createUploadItem();
         })
     }
 
     document.querySelector('.uploadBtn').onclick = function() {
+        console.log(uploadArr);
         for(let i=0;i<uploadArr.length;i++) {
             uploadArr[i].uploadImg();
         }
@@ -176,6 +177,8 @@
             }
             xhr.onload = function() {
                 console.log('upload completed');
+                let res = JSON.parse(xhr.responseText);
+                console.log(res.info);
             }
             xhr.send(form);
         }

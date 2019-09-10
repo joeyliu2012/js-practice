@@ -3,6 +3,7 @@ const Router = require('koa-router');
 const static = require('koa-static');
 const koaBody = require('koa-body');
 const nunjucks = require('koa-nunjucks-2');
+const fs = require('fs');
 
 let userData = [
     {
@@ -78,6 +79,30 @@ router.get('/checkUser', ctx => {
 router.get('/photo', async ctx => {
     await ctx.render('photo');
 })
+
+router.post('/upload', async ctx => {
+    let req = ctx.request.files;
+    let res = await uploadFile(req);
+    ctx.body = res;
+})
+
+function uploadFile(req) {
+    return new Promise(resolve =>{
+        fs.writeFile('static/img/album/' + req.img.name, fs.readFileSync(req.img.path), err=>{
+            if(!err) {
+                resolve({
+                    code: 0,
+                    info: 'add successfully'
+                })
+            } else {
+                resolve({
+                    code: 1,
+                    info: 'add failed'
+                })
+            }
+        });
+    })   
+}
 
 app.use(router.routes());
 app.listen(3000);
