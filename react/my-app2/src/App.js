@@ -4,6 +4,7 @@ import FriendList from './components/FriendList2';
 import friend1 from './data/friends1'
 import friend2 from './data/friends2'
 
+import KeyDemo from './components/Keydemo'
 
 function App() {
   return (
@@ -13,6 +14,9 @@ function App() {
       <FriendList data={friend1} />
       <hr />
       <FriendList data={friend2} />
+
+      <hr />
+      <KeyDemo />
     </div>
   );
 }
