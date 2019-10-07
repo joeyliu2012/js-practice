@@ -5,6 +5,7 @@ import friend1 from './data/friends1'
 import friend2 from './data/friends2'
 
 import KeyDemo from './components/Keydemo'
+import CanControl from './components/CanControl'
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
 
       <hr />
       <KeyDemo />
+      <hr />
+      <CanControl />
     </div>
   );
 }
