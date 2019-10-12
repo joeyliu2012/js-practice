@@ -1,9 +1,11 @@
 import React from 'react'
-import { Route, Link } from 'react-router-dom'
+import { Route, Link, NavLink, Switch, Redirect } from 'react-router-dom'
 import Home from './views/Home'
 import About from './views/About'
 import Item from './views/Item'
+import Cart from './views/Cart'
 import './views/style.css'
+import Login from './views/Login'
 
 class BaseApp extends React.Component {
     constructor(props) {
@@ -40,7 +42,33 @@ class BaseApp extends React.Component {
                     name: 'Apple Watch Series 4',
                     price: 599900
                 }
-            ]
+            ],
+            users: [
+                {
+                    id: 1,
+                    username: 'baoge',
+                    password: '123'
+                },
+                {
+                    id: 2,
+                    username: 'MT',
+                    password: '123'
+                },
+                {
+                    id: 3,
+                    username: 'dahai',
+                    password: '123'
+                },
+                {
+                    id: 4,
+                    username: 'zMouse',
+                    password: '123'
+                }
+            ],
+            userInfo: {
+                id: 0,
+                username: ''
+            }
         }
     }
 
@@ -49,23 +77,43 @@ class BaseApp extends React.Component {
             <div>
                 <h2>router basic</h2>
                 <nav>
-                    <Link to="/">Home</Link>
+                    <NavLink exact
+                        activeStyle={{ 'color': 'red' }}
+                        isActive={(match, location) => {
+                            return match || location.pathname.startsWith('/item');
+                        }}
+                        to="/">Home</NavLink>
                     <span>|</span>
-                    <Link to="/about">About</Link>
+                    <NavLink activeStyle={{ 'color': 'red' }} to="/about">About</NavLink>
+                    <span>|</span>
+                    <NavLink to="/cart" activeStyle={{ color: 'red' }} exact>Cart</NavLink>
                 </nav>
                 <hr />
                 {/* <Route exact path='/' component={Home} />  */}
-                <Route exact path='/' render={() => {
-                    return (
-                        <Home items={this.state.items} />
-                    )
-                }} />
-                <Route path='/item/:id' render={(props)=>{
-                    return (
-                        <Item {...props} items={this.state.items} />
-                    )
-                }} />
-                <Route path='/about' component={About} />
+                <Switch>
+                    <Route exact path='/:page(\d*)' render={(props) => {
+                        return (
+                            <Home {...props} items={this.state.items} />
+                        )
+                    }} />
+                    <Route path='/item/:id' render={(props) => {
+                        return (
+                            <Item {...props} items={this.state.items} />
+                        )
+                    }} />
+                    <Route path='/about' component={About} />
+                    <Route path='/login' component={Login} />
+                    <Route path='/cart' render={() => {
+                        if (this.state.userInfo.id > 0) {
+                            return <Cart />
+                        } else {
+                            return <Redirect to='/login' />;
+                        }
+                    }} />
+                    <Route component={() => {
+                        return (<div>404 - Not Found!!!</div>)
+                    }} />
+                </Switch>
             </div>
         )
     }
